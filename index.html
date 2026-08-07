@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b0d">
+  <title>Posterline</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div>
+          <h1>POSTERLINE</h1>
+          <p>Guess the movie, one line at a time.</p>
+        </div>
+      </div>
+
+      <div class="stats" aria-label="Game statistics">
+        <div><span class="stat-label">ROUND</span><strong id="roundStat">0</strong></div>
+        <div><span class="stat-label">LINES</span><strong id="linesStat">0</strong></div>
+        <div><span class="stat-label">SCORE</span><strong id="scoreStat">0</strong></div>
+      </div>
+    </header>
+
+    <section class="game-grid">
+      <div class="stage-column">
+        <div id="stage" class="stage">
+          <canvas id="posterCanvas" width="420" height="630" aria-label="Hidden movie poster"></canvas>
+
+          <div id="introPanel" class="poster-overlay">
+            <div class="overlay-inner">
+              <div class="tiny-kicker">50 MOVIES</div>
+              <h2>How quickly can you see it?</h2>
+              <p>Start with one pixel-wide slice of a movie poster. Reveal another line whenever you need it.</p>
+              <button id="startBtn" class="primary-btn">START</button>
+            </div>
+          </div>
+
+          <div id="resultPanel" class="poster-overlay hidden">
+            <div class="overlay-inner result-inner">
+              <div id="resultKicker" class="tiny-kicker">CORRECT</div>
+              <h2 id="resultTitle">Movie title</h2>
+              <p id="resultDetail"></p>
+              <button id="nextPosterBtn" class="primary-btn">NEXT POSTER</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="nextLineBtn" class="control-btn" disabled>NEXT LINE</button>
+          <button id="passBtn" class="control-btn ghost" disabled>PASS</button>
+          <button id="libraryBtn" class="control-btn ghost">POSTER LIBRARY</button>
+        </div>
+
+        <p id="message" class="message" aria-live="polite">
+          Add poster images to the <strong>posters</strong> folder, then press Start.
+        </p>
+      </div>
+
+      <section class="choices-panel">
+        <div class="choices-heading">
+          <div>
+            <span class="tiny-kicker">YOUR GUESS</span>
+            <h2>Choose a movie</h2>
+          </div>
+          <input id="movieSearch" type="search" autocomplete="off" placeholder="Filter titles…" aria-label="Filter movie titles">
+        </div>
+
+        <div id="movieButtons" class="movie-buttons" aria-label="Movie choices"></div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="libraryDialog">
+    <div class="dialog-card">
+      <div class="dialog-heading">
+        <div>
+          <span class="tiny-kicker">SETUP</span>
+          <h2>Poster Library</h2>
+        </div>
+        <button id="closeLibraryBtn" class="icon-btn" aria-label="Close">×</button>
+      </div>
+
+      <p>
+        Posterline tries each expected filename as <code>.jpg</code>, <code>.jpeg</code>,
+        <code>.png</code>, and <code>.webp</code>.
+      </p>
+
+      <div class="library-actions">
+        <button id="scanBtn" class="primary-btn small">SCAN POSTERS</button>
+        <span id="scanSummary">Not scanned yet.</span>
+      </div>
+
+      <div id="libraryList" class="library-list"></div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
