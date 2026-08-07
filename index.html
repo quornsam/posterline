@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b0b0d">
+  <meta name="theme-color" content="#0d1016">
   <title>Posterline</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,55 +18,77 @@
         </div>
       </div>
 
-      <div class="stats" aria-label="Game statistics">
-        <div><span class="stat-label">ROUND</span><strong id="roundStat">0</strong></div>
-        <div><span class="stat-label">LINES</span><strong id="linesStat">0</strong></div>
-        <div><span class="stat-label">SCORE</span><strong id="scoreStat">0</strong></div>
+      <div class="header-actions">
+        <button id="themeBtn" class="utility-btn" type="button">LIGHT MODE</button>
+        <button id="fullscreenBtn" class="utility-btn" type="button">FULL SCREEN</button>
       </div>
     </header>
 
+    <section class="scorebar" aria-label="Game statistics">
+      <div><span>ROUND</span><strong id="roundStat">0 / 10</strong></div>
+      <div><span>LINES</span><strong id="linesStat">0</strong></div>
+      <div><span>WRONG</span><strong id="wrongStat">0 / 3</strong></div>
+      <div><span>SCORE</span><strong id="scoreStat">0</strong></div>
+    </section>
+
     <section class="game-grid">
       <div class="stage-column">
-        <div id="stage" class="stage">
+        <div class="stage">
           <canvas id="posterCanvas" width="420" height="630" aria-label="Hidden movie poster"></canvas>
 
           <div id="introPanel" class="poster-overlay">
-            <div class="overlay-inner">
-              <div class="tiny-kicker">50 MOVIES</div>
+            <div class="overlay-card">
+              <span class="kicker">10 ROUNDS · 50 POSSIBLE FILMS</span>
               <h2>How quickly can you see it?</h2>
-              <p>Start with one pixel-wide slice of a movie poster. Reveal another line whenever you need it.</p>
-              <button id="startBtn" class="primary-btn">START</button>
+              <p>One pixel-wide line appears first. Reveal more only when you need them. Three wrong guesses ends the round.</p>
+
+              <div class="score-preview">
+                <span><b>1</b> line <strong>1000</strong></span>
+                <span><b>2</b> lines <strong>500</strong></span>
+                <span><b>3</b> lines <strong>100</strong></span>
+                <span><b>4</b> lines <strong>50</strong></span>
+              </div>
+
+              <button id="startBtn" class="primary-btn" type="button">START GAME</button>
             </div>
           </div>
 
           <div id="resultPanel" class="poster-overlay hidden">
-            <div class="overlay-inner result-inner">
-              <div id="resultKicker" class="tiny-kicker">CORRECT</div>
+            <div class="overlay-card result-card">
+              <span id="resultKicker" class="kicker">CORRECT</span>
               <h2 id="resultTitle">Movie title</h2>
               <p id="resultDetail"></p>
-              <button id="nextPosterBtn" class="primary-btn">NEXT POSTER</button>
+              <button id="nextRoundBtn" class="primary-btn" type="button">NEXT ROUND</button>
             </div>
           </div>
         </div>
 
         <div class="controls">
-          <button id="nextLineBtn" class="control-btn" disabled>NEXT LINE</button>
-          <button id="passBtn" class="control-btn ghost" disabled>PASS</button>
-          <button id="libraryBtn" class="control-btn ghost">POSTER LIBRARY</button>
+          <button id="nextLineBtn" class="control-btn" disabled type="button">NEXT LINE</button>
+          <button id="passBtn" class="control-btn secondary" disabled type="button">PASS <small>−5</small></button>
         </div>
 
-        <p id="message" class="message" aria-live="polite">
-          Add poster images to the <strong>posters</strong> folder, then press Start.
-        </p>
+        <p id="message" class="message" aria-live="polite">Press Start Game to begin.</p>
       </div>
 
       <section class="choices-panel">
-        <div class="choices-heading">
+        <div class="search-zone">
+          <label for="movieSearch">
+            <span class="kicker">SEARCH THE 50 TITLES</span>
+            <strong>Know what you're looking for?</strong>
+          </label>
+          <div class="search-wrap">
+            <span aria-hidden="true">⌕</span>
+            <input id="movieSearch" type="search" autocomplete="off" placeholder="Start typing a movie title…" aria-label="Search movie titles">
+          </div>
+        </div>
+
+        <div class="choice-header">
           <div>
-            <span class="tiny-kicker">YOUR GUESS</span>
+            <span class="kicker">YOUR GUESS</span>
             <h2>Choose a movie</h2>
           </div>
-          <input id="movieSearch" type="search" autocomplete="off" placeholder="Filter titles…" aria-label="Filter movie titles">
+          <div id="libraryInfo" class="library-info">Loading library…</div>
         </div>
 
         <div id="movieButtons" class="movie-buttons" aria-label="Movie choices"></div>
@@ -74,27 +96,21 @@
     </section>
   </main>
 
-  <dialog id="libraryDialog">
-    <div class="dialog-card">
-      <div class="dialog-heading">
-        <div>
-          <span class="tiny-kicker">SETUP</span>
-          <h2>Poster Library</h2>
-        </div>
-        <button id="closeLibraryBtn" class="icon-btn" aria-label="Close">×</button>
+  <dialog id="finalDialog">
+    <div class="final-card">
+      <span class="kicker">GAME COMPLETE</span>
+      <h2 id="finalHeading">Cinema Oracle</h2>
+      <div id="finalScore" class="final-score">0</div>
+      <p class="final-label">POINTS</p>
+      <p id="finalReference" class="final-reference"></p>
+
+      <div class="final-stats">
+        <div><span>CORRECT</span><strong id="finalCorrect">0 / 10</strong></div>
+        <div><span>WRONG</span><strong id="finalWrong">0</strong></div>
+        <div><span>PASSES</span><strong id="finalPasses">0</strong></div>
       </div>
 
-      <p>
-        Posterline tries each expected filename as <code>.jpg</code>, <code>.jpeg</code>,
-        <code>.png</code>, and <code>.webp</code>.
-      </p>
-
-      <div class="library-actions">
-        <button id="scanBtn" class="primary-btn small">SCAN POSTERS</button>
-        <span id="scanSummary">Not scanned yet.</span>
-      </div>
-
-      <div id="libraryList" class="library-list"></div>
+      <button id="newGameBtn" class="primary-btn" type="button">NEW GAME</button>
     </div>
   </dialog>
 
