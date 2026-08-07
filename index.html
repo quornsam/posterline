@@ -34,7 +34,7 @@
     <section class="game-grid">
       <div class="stage-column">
         <div class="stage">
-          <canvas id="posterCanvas" width="420" height="630" aria-label="Hidden movie poster"></canvas>
+          <canvas id="posterCanvas" width="520" height="780" aria-label="Hidden movie poster"></canvas>
 
           <div id="introPanel" class="poster-overlay">
             <div class="overlay-card">
@@ -44,21 +44,12 @@
 
               <div class="score-preview">
                 <span><b>1</b> line <strong>1000</strong></span>
-                <span><b>2</b> lines <strong>500</strong></span>
-                <span><b>3</b> lines <strong>100</strong></span>
-                <span><b>4</b> lines <strong>50</strong></span>
+                <span><b>5</b> lines <strong>400</strong></span>
+                <span><b>10</b> lines <strong>100</strong></span>
+                <span><b>50</b> lines <strong>10</strong></span>
               </div>
 
               <button id="startBtn" class="primary-btn" type="button">START GAME</button>
-            </div>
-          </div>
-
-          <div id="resultPanel" class="poster-overlay hidden">
-            <div class="overlay-card result-card">
-              <span id="resultKicker" class="kicker">CORRECT</span>
-              <h2 id="resultTitle">Movie title</h2>
-              <p id="resultDetail"></p>
-              <button id="nextRoundBtn" class="primary-btn" type="button">NEXT ROUND</button>
             </div>
           </div>
         </div>
@@ -68,10 +59,19 @@
           <button id="passBtn" class="control-btn secondary" disabled type="button">PASS <small>−5</small></button>
         </div>
 
+        <div id="roundResult" class="round-result hidden" aria-live="polite">
+          <div class="round-result-copy">
+            <span id="resultKicker" class="kicker">CORRECT</span>
+            <strong id="resultTitle">Movie title</strong>
+            <span id="resultDetail"></span>
+          </div>
+          <button id="nextRoundBtn" class="primary-btn" type="button">NEXT ROUND</button>
+        </div>
+
         <p id="message" class="message" aria-live="polite">Press Start Game to begin.</p>
       </div>
 
-      <section class="choices-panel">
+      <div class="choice-column">
         <div class="search-zone">
           <label for="movieSearch">
             <span class="kicker">SEARCH THE 50 TITLES</span>
@@ -83,16 +83,18 @@
           </div>
         </div>
 
-        <div class="choice-header">
-          <div>
-            <span class="kicker">YOUR GUESS</span>
-            <h2>Choose a movie</h2>
+        <section class="choices-panel">
+          <div class="choice-header">
+            <div>
+              <span class="kicker">YOUR GUESS</span>
+              <h2>Choose a movie</h2>
+            </div>
+            <div id="libraryInfo" class="library-info">Loading library…</div>
           </div>
-          <div id="libraryInfo" class="library-info">Loading library…</div>
-        </div>
 
-        <div id="movieButtons" class="movie-buttons" aria-label="Movie choices"></div>
-      </section>
+          <div id="movieButtons" class="movie-buttons" aria-label="Movie choices"></div>
+        </section>
+      </div>
     </section>
   </main>
 

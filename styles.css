@@ -132,14 +132,20 @@ h1 {
 
 .game-grid {
   display:grid;
-  grid-template-columns:minmax(310px,500px) minmax(0,1fr);
-  gap:26px;
+  grid-template-columns:minmax(420px,560px) minmax(0,1fr);
+  grid-template-areas:
+    "stage search"
+    "stage choices";
+  gap:14px 28px;
   align-items:start;
 }
 
+.stage-column { grid-area:stage; }
+.choice-column { display:contents; }
+
 .stage {
   position:relative;
-  width:min(100%,420px);
+  width:min(100%,520px);
   margin:0 auto;
   aspect-ratio:2/3;
   background:var(--poster-bg);
@@ -170,7 +176,6 @@ canvas { width:100%; height:100%; display:block; background:#000; }
   margin-bottom:15px;
 }
 .overlay-card p { color:#cbc6bd; line-height:1.5; margin-bottom:19px; }
-.result-card { text-align:center; }
 
 .kicker {
   display:block;
@@ -248,6 +253,7 @@ canvas { width:100%; height:100%; display:block; background:#000; }
 }
 
 .choices-panel {
+  grid-area:choices;
   background:linear-gradient(180deg,var(--panel),color-mix(in srgb,var(--panel) 88%,transparent));
   border:1px solid var(--border);
   border-radius:18px;
@@ -256,8 +262,12 @@ canvas { width:100%; height:100%; display:block; background:#000; }
 }
 
 .search-zone {
-  padding:3px 3px 17px;
-  border-bottom:1px solid var(--border);
+  grid-area:search;
+  padding:16px 18px 18px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:var(--panel);
+  box-shadow:0 10px 30px color-mix(in srgb,var(--shadow) 30%,transparent);
 }
 .search-zone label strong {
   display:block;
@@ -294,7 +304,7 @@ canvas { width:100%; height:100%; display:block; background:#000; }
   justify-content:space-between;
   gap:16px;
   align-items:end;
-  padding:16px 3px 12px;
+  padding:2px 3px 12px;
 }
 .choice-header h2 { margin:0; font-size:1.4rem; }
 .library-info { color:var(--muted); font-size:.76rem; text-align:right; }
@@ -303,7 +313,7 @@ canvas { width:100%; height:100%; display:block; background:#000; }
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:7px;
-  max-height:620px;
+  max-height:688px;
   overflow:auto;
   padding-right:3px;
   scrollbar-width:thin;
@@ -360,6 +370,44 @@ html[data-theme="dark"] .movie-btn[data-color="7"] { --tile:#634b35; --tile-bord
   border-color:var(--good) !important;
 }
 
+
+.round-result {
+  width:min(100%,560px);
+  margin:10px auto 0;
+  padding:12px 13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--panel);
+  box-shadow:0 12px 35px color-mix(in srgb,var(--shadow) 32%,transparent);
+}
+.round-result.hidden { display:none; }
+.round-result-copy {
+  min-width:0;
+  display:grid;
+  gap:2px;
+}
+.round-result-copy .kicker { margin:0; color:var(--good); }
+.round-result-copy strong {
+  font-size:1.05rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.round-result-copy > span:last-child {
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.3;
+}
+.round-result .primary-btn {
+  flex:0 0 auto;
+  padding:10px 16px;
+  font-size:.75rem;
+}
+
 dialog {
   border:0;
   padding:0;
@@ -397,22 +445,135 @@ dialog::backdrop {
 }
 .final-stats strong { font-size:1.05rem; }
 
-@media(max-width:1050px){
-  .game-grid{grid-template-columns:minmax(290px,420px) minmax(0,1fr);gap:17px}
-  .movie-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:1120px){
+  .game-grid{
+    grid-template-columns:minmax(360px,470px) minmax(0,1fr);
+    gap:14px 18px;
+  }
+  .stage{width:min(100%,470px)}
+  .movie-buttons{grid-template-columns:repeat(2,minmax(0,1fr));max-height:610px}
 }
+
 @media(max-width:760px){
-  .app-shell{width:min(100% - 18px,620px);padding-top:12px}
-  .topbar{align-items:flex-start;flex-direction:column;gap:13px}
+  .app-shell{
+    width:100%;
+    padding:10px 10px 34px;
+  }
+  .topbar{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:11px;
+    margin:0 2px;
+  }
+  .brand p{font-size:.82rem}
   .header-actions{width:100%;justify-content:stretch}
   .utility-btn{flex:1}
-  .scorebar{grid-template-columns:1fr 1fr}
-  .game-grid{grid-template-columns:1fr}
-  .stage{width:min(88vw,390px)}
-  .movie-buttons{max-height:none}
+  .scorebar{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:5px;
+    margin:10px 0 12px;
+  }
+  .scorebar > div{padding:8px 7px;text-align:center}
+  .scorebar strong{font-size:.95rem}
+  .scorebar span{font-size:.54rem}
+
+  .game-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "search"
+      "stage"
+      "choices";
+    gap:10px;
+  }
+
+  .search-zone{
+    border-radius:13px;
+    padding:11px 12px 13px;
+  }
+  .search-zone label strong{
+    font-size:.95rem;
+    margin-bottom:7px;
+  }
+  .search-wrap{
+    padding:0 11px;
+    border-radius:11px;
+  }
+  #movieSearch{padding:11px 0;font-size:1rem}
+
+  .stage-column{
+    width:100%;
+    min-width:0;
+  }
+  .stage{
+    width:100%;
+    max-width:none;
+    border-radius:12px;
+  }
+
+  .controls{
+    width:100%;
+    margin-top:9px;
+  }
+  .round-result{
+    width:100%;
+    margin-top:8px;
+    align-items:flex-end;
+    border-radius:11px;
+  }
+  .round-result-copy strong{
+    white-space:normal;
+    font-size:.96rem;
+  }
+  .round-result .primary-btn{
+    padding:9px 12px;
+    font-size:.68rem;
+  }
+  .message{
+    width:100%;
+    min-height:0;
+    margin:7px auto 0;
+    font-size:.76rem;
+  }
+
+  .choices-panel{
+    padding:11px;
+    border-radius:13px;
+  }
+  .choice-header{padding:1px 2px 9px}
+  .choice-header h2{font-size:1.12rem}
+  .library-info{font-size:.65rem}
+  .movie-buttons{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    max-height:none;
+    gap:6px;
+  }
+  .movie-btn{
+    font-size:.77rem;
+    min-height:46px;
+  }
+
+  #finalDialog{
+    width:100%;
+    max-width:none;
+    inset:auto 0 0 0;
+    margin:0;
+  }
+  .final-card{
+    width:calc(100vw - 16px);
+    margin:0 auto 8px;
+    padding:20px 18px;
+    border-radius:18px;
+  }
+  .final-card h2{font-size:2rem}
+  .final-score{font-size:4.6rem}
+  .final-reference{font-size:.95rem;margin-bottom:15px}
 }
+
 @media(max-width:430px){
-  .choices-panel{padding:11px}
-  .movie-buttons{gap:6px}
-  .movie-btn{font-size:.76rem;min-height:47px}
+  .brand-mark{width:34px;height:34px}
+  h1{font-size:1.75rem}
+  .scorebar > div{padding:7px 4px}
+  .movie-btn{font-size:.73rem}
+  .round-result{gap:8px;padding:10px}
 }

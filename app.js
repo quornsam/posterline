@@ -4,8 +4,8 @@
   const GAME_ROUNDS = 10;
   const CHOICE_COUNT = 50;
   const MAX_WRONG = 3;
-  const CANVAS_W = 420;
-  const CANVAS_H = 630;
+  const CANVAS_W = 520;
+  const CANVAS_H = 780;
   const EXTENSIONS = ['jpg','jpeg','png','webp'];
 
   const canvas = document.getElementById('posterCanvas');
@@ -22,7 +22,7 @@
   const els = {
     startBtn:$('startBtn'), nextRoundBtn:$('nextRoundBtn'), nextLineBtn:$('nextLineBtn'),
     passBtn:$('passBtn'), themeBtn:$('themeBtn'), fullscreenBtn:$('fullscreenBtn'),
-    introPanel:$('introPanel'), resultPanel:$('resultPanel'), resultKicker:$('resultKicker'),
+    introPanel:$('introPanel'), roundResult:$('roundResult'), resultKicker:$('resultKicker'),
     resultTitle:$('resultTitle'), resultDetail:$('resultDetail'), movieButtons:$('movieButtons'),
     movieSearch:$('movieSearch'), message:$('message'), roundStat:$('roundStat'),
     linesStat:$('linesStat'), wrongStat:$('wrongStat'), scoreStat:$('scoreStat'),
@@ -210,10 +210,28 @@
 
   function scoreForLines(lines) {
     if (lines <= 1) return 1000;
-    if (lines === 2) return 500;
-    if (lines === 3) return 100;
-    if (lines === 4) return 50;
-    return Math.max(1,54-lines);
+    if (lines === 2) return 750;
+    if (lines === 3) return 600;
+    if (lines === 4) return 500;
+    if (lines === 5) return 400;
+    if (lines === 6) return 300;
+    if (lines === 7) return 250;
+    if (lines === 8) return 200;
+    if (lines === 9) return 150;
+    if (lines <= 14) return 100;
+    if (lines <= 19) return 90;
+    if (lines <= 24) return 80;
+    if (lines <= 29) return 70;
+    if (lines <= 34) return 60;
+    if (lines <= 39) return 50;
+    if (lines <= 44) return 40;
+    if (lines <= 49) return 25;
+    if (lines <= 59) return 10;
+    if (lines <= 69) return 5;
+    if (lines <= 79) return 4;
+    if (lines <= 89) return 3;
+    if (lines <= 100) return 2;
+    return 1;
   }
 
   function updateStats() {
@@ -318,6 +336,8 @@
     if (!currentMovie) return;
     playing=false;
     showFullPoster();
+    els.movieSearch.value='';
+    renderMovieButtons();
     setButtonsEnabled(false);
     els.nextLineBtn.disabled=true;
     els.passBtn.disabled=true;
@@ -347,7 +367,7 @@
 
     const finalRound=currentRound>=GAME_ROUNDS;
     els.nextRoundBtn.textContent=finalRound?'SEE RESULTS':'NEXT ROUND';
-    els.resultPanel.classList.remove('hidden');
+    els.roundResult.classList.remove('hidden');
   }
 
   function handleGuess(movie,btn) {
@@ -424,7 +444,7 @@
   }
 
   async function startRound() {
-    els.resultPanel.classList.add('hidden');
+    els.roundResult.classList.add('hidden');
     wrongThisRound=0;
     wrongGuesses=new Set();
     linesRevealed=0;
@@ -489,8 +509,9 @@
 
     els.libraryInfo.textContent=`50 from ${sequelFiltered.length} sequel-free films`;
     els.introPanel.classList.add('hidden');
-    els.resultPanel.classList.add('hidden');
+    els.roundResult.classList.add('hidden');
     if (els.finalDialog.open) els.finalDialog.close();
+    els.roundResult.classList.add('hidden');
     updateStats();
     renderMovieButtons();
     startRound();
@@ -550,7 +571,7 @@
 
   els.nextRoundBtn.addEventListener('click',()=>{
     if (currentRound>=GAME_ROUNDS) {
-      els.resultPanel.classList.add('hidden');
+      els.roundResult.classList.add('hidden');
       showFinalResults();
     } else {
       startRound();
